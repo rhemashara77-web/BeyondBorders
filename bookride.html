@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Book a Ride — Beyond Borders</title>
+<style>
+  body {
+    margin: 0;
+    font-family: Inter, Arial, sans-serif;
+    background: #f9f9f9;
+  }
+
+  header {
+    background: #ffffff;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+
+  .logo-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .logo-container img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+  }
+
+  header h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    color: #e64b3c;
+  }
+
+  nav a {
+    margin-left: 25px;
+    text-decoration: none;
+    font-size: 16px;
+    color: #333;
+    font-weight: 600;
+  }
+
+  nav a:hover {
+    color: #e64b3c;
+  }
+
+  .container {
+    padding: 40px;
+  }
+
+  h2 {
+    font-size: 28px;
+    margin-bottom: 10px;
+    color: #222;
+    text-align: center;
+  }
+
+  .fleet-section {
+    margin-top: 40px;
+  }
+
+  .fleet-title {
+    font-size: 22px;
+    margin-bottom: 20px;
+    color: #444;
+    font-weight: 600;
+  }
+
+  .fleet-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  @media (max-width: 1000px) {
+    .fleet-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 700px) {
+    .fleet-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .fleet-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    text-align: center;
+  }
+
+  .fleet-card img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 15px;
+  }
+
+  .fleet-card h3 {
+    margin-bottom: 10px;
+    font-size: 20px;
+    color: #222;
+  }
+
+  .fleet-card p {
+    font-size: 14px;
+    color: #555;
+  }
+
+  .book-banner {
+    width: 100%;
+    height: 320px;
+    background: url("bookride.jpg") center/cover no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .book-banner h2 {
+    font-size: 55px;
+    color: white;
+    font-weight: 700;
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.8);
+    margin: 0;
+  }
+
+  .price-toll {
+    margin: 12px 0;
+    text-align: left;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .price-toll span {
+    font-size: 14px;
+    color: #555;
+    font-weight: 500;
+  }
+
+  .book-btn {
+    width: 100%;
+    background: #ff4d30;
+    border: none;
+    padding: 12px 0;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 12px;
+  }
+
+  /* Modal Styles */
+  .modal {
+    display: none;
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+
+  .modal-content {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  }
+
+  .modal-content h3 {
+    margin-bottom: 20px;
+    color: #e64b3c;
+  }
+
+  .modal-content p {
+    margin-bottom: 20px;
+  }
+
+  .close-btn {
+    padding: 10px 20px;
+    background: #ff4d30;
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-container">
+    <img src="logo.png" alt="Logo" />
+    <h1>Beyond Borders</h1>
+  </div>
+  <nav>
+    <a href="home.html">Home</a>
+  </nav>
+</header>
+
+<!-- BOOK A RIDE BANNER -->
+<div class="book-banner">
+  <h2>Book a Ride</h2>
+</div>
+
+<div class="container">
+
+  <!-- Fleet Cars -->
+  <div class="fleet-section">
+    <div class="fleet-title">Fleet Cars</div>
+    <div class="fleet-grid">
+
+      <div class="fleet-card">
+        <img src="Sedan.jpg" alt="Sedan" />
+        <h3>Sedan</h3>
+        <p>Comfortable and affordable rides for city travel.</p>
+        <div class="price-toll">₹899 <span>| Toll : ₹120 Extra</span></div>
+        <button class="book-btn" onclick="bookRide('Sedan')">Book Now</button>
+      </div>
+
+      <div class="fleet-card">
+        <img src="hatchback.jpg" alt="Hatchback" />
+        <h3>Hatchback</h3>
+        <p>Perfect for short-distance travel and daily commuting.</p>
+        <div class="price-toll">₹799 <span>| Toll : ₹120 Extra</span></div>
+        <button class="book-btn" onclick="bookRide('Hatchback')">Book Now</button>
+      </div>
+
+      <div class="fleet-card">
+        <img src="suv.jpg" alt="SUV" />
+        <h3>SUV</h3>
+        <p>Spacious and powerful vehicles for long trips.</p>
+        <div class="price-toll">₹1699 <span>| Toll : ₹120 Extra</span></div>
+        <button class="book-btn" onclick="bookRide('SUV')">Book Now</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Super Luxury Fleet -->
+  <div class="fleet-section">
+    <div class="fleet-title">Super Luxury Fleet</div>
+    <div class="fleet-grid">
+
+      <div class="fleet-card">
+        <img src="mercedes.jpg" alt="Mercedes" />
+        <h3>Mercedes Benz</h3>
+        <p>Experience premium comfort with world‑class luxury.</p>
+        <div class="price-toll">₹8499 <span>| Toll : ₹120 Extra</span></div>
+        <button class="book-btn" onclick="bookRide('Mercedes Benz')">Book Now</button>
+      </div>
+
+      <div class="fleet-card">
+        <img src="bmw.jpg" alt="BMW" />
+        <h3>BMW Series</h3>
+        <p>Luxury and performance combined for elite rides.</p>
+        <div class="price-toll">₹8999 <span>| Toll : ₹120 Extra</span></div>
+        <button class="book-btn" onclick="bookRide('BMW Series')">Book Now</button>
+      </div>
+
+      <div class="fleet-card">
+        <img src="audi.jpg" alt="Audi" />
+        <h3>Audi A6</h3>
+        <p>Modern design and high-class comfort for special journeys.</p>
+        <div class="price-toll">₹7599 <span>| Toll : ₹120 Extra</span></div>
+        <button class="book-btn" onclick="bookRide('Audi A6')">Book Now</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Bus Fleet -->
+  <div class="fleet-section">
+    <div class="fleet-title">Bus Fleet</div>
+    <div class="fleet-grid">
+
+      <div class="fleet-card">
+        <img src="mini.jpg" alt="Mini Bus" />
+        <h3>Mini Bus</h3>
+        <p>Ideal for small groups and outstation tours.</p>
+        <div class="price-toll">₹3999 <span>| Toll : ₹120 Extra</span></div>
+        <button class="book-btn" onclick="bookRide('Mini Bus')">Book Now</button>
+      </div>
+
+      <div class="fleet-card">
+        <img src="traveller.jpg" alt="Traveller" />
+        <h3>Force Traveller</h3>
+        <p>Spacious and comfortable, perfect for long-distance group travel.</p>
+        <div class="price-toll">₹5999 <span>| Toll : ₹120 Extra</span></div>
+        <button class="book-btn" onclick="bookRide('Force Traveller')">Book Now</button>
+      </div>
+
+      <div class="fleet-card">
+        <img src="luxury.jpg" alt="Luxury Bus" />
+        <h3>Luxury Bus</h3>
+        <p>Premium seating and smooth ride for large groups.</p>
+        <div class="price-toll">₹8999 <span>| Toll : ₹120 Extra</span></div>
+        <button class="book-btn" onclick="bookRide('Luxury Bus')">Book Now</button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- Modal -->
+<div class="modal" id="bookingModal">
+  <div class="modal-content">
+    <h3>Your Ride is Booked!</h3>
+    <p id="rideInfo">Details here...</p>
+    <button class="close-btn" onclick="closeModal()">Close</button>
+  </div>
+</div>
+
+<script>
+  function generateBookingID() {
+    return 'BB-' + Math.floor(100000 + Math.random() * 900000); // 6-digit ID
+  }
+
+  function bookRide(rideName) {
+    const bookingID = generateBookingID();
+    const rideInfo = `Ride: ${rideName}<br>Booking ID: ${bookingID}<br><a href="tracking.html?booking=${bookingID}">Track your ride</a>`;
+    document.getElementById('rideInfo').innerHTML = rideInfo;
+    document.getElementById('bookingModal').style.display = 'flex';
+  }
+
+  function closeModal() {
+    document.getElementById('bookingModal').style.display = 'none';
+  }
+
+  // Optional: close modal when clicking outside content
+  window.onclick = function(event) {
+    const modal = document.getElementById('bookingModal');
+    if(event.target === modal) {
+      modal.style.display = 'none';
+    }
+  }
+</script>
+
+</body>
+</html>

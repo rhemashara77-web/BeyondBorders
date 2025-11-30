@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Destinations — Tours & Travels</title>
+
+<script>
+// Redirect if user is NOT logged in
+const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+if (!currentUser || localStorage.getItem("loggedIn") !== "true") {
+    window.location.href = "login.html";
+}
+</script>
+
+<style>
+body {
+    margin: 0;
+    font-family: Inter, Arial, sans-serif;
+    background: url("Background.jpg") center/cover no-repeat fixed;
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    backdrop-filter: blur(3px);
+    z-index: -1;
+}
+
+/* ------------------ HEADER ------------------ */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(6px);
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.header-left img {
+    height: 55px;
+}
+
+.header-left span {
+    font-size: 24px;
+    font-weight: 700;
+    color: #e64b3c;
+}
+
+.header-right a {
+    text-decoration: none;
+    margin-left: 18px;
+    color: #e64b3c;
+    font-weight: 600;
+    font-size: 17px;
+    transition: 0.3s;
+}
+
+.header-right a:hover {
+    color: #bf3f33;
+}
+
+.title {
+    text-align: center;
+    color: white;
+    font-size: 42px;
+    margin-top: 40px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.greeting {
+    text-align: center;
+    color: white;
+    font-size: 30px;
+    margin-top: 10px;
+    font-weight: 500;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 40px auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.card {
+    background: white;
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    transition: 0.2s;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+}
+
+.card img {
+    width: 100%;
+    height: 180px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.card h3 {
+    margin: 12px 0 5px;
+}
+
+.card p {
+    margin: 0;
+    color: #555;
+}
+
+/* ---------------- SEARCH BAR ---------------- */
+.search-bar {
+    max-width: 900px;
+    margin: 30px auto 0;
+    background: white;
+    padding: 18px;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.search-field {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    padding: 10px 16px;
+    background: #f7f7f7;
+    border-radius: 40px;
+}
+
+.search-field .icon {
+    font-size: 20px;
+}
+
+.search-field label {
+    font-size: 13px;
+    color: #666;
+}
+
+.search-field input {
+    border: none;
+    background: transparent;
+    font-size: 15px;
+    outline: none;
+    width: 100%;
+}
+
+.search-btn {
+    background: #e64b3c;
+    color: white;
+    border: none;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.search-btn:hover {
+    background: #c0392b;
+}
+
+.no-results {
+    text-align: center;
+    color: white;
+    font-size: 24px;
+    margin-top: 20px;
+    display: none;
+}
+
+/* ------------------ COPYRIGHT ------------------ */
+.copyright {
+    text-align: center;
+    padding: 15px 0;
+    font-size: 14px;
+    color: white;
+    background: rgba(0,0,0,0.5);
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header>
+    <div class="header-left">
+        <img src="Logo.png" alt="logo">
+        <span>Beyond Borders</span>
+    </div>
+
+    <div class="header-right">
+        <a href="home.html">Home</a>
+        <a href="bookride.html" class="ride-btn">Book a Ride</a>
+        <a href="services.html">Services</a>
+        <a href="contact.html">Contact</a>
+        <a href="#" onclick="logout()">Logout</a>
+    </div>
+</header>
+
+<!-- SEARCH BAR -->
+<div class="search-bar">
+    <div class="search-field">
+        <span class="icon">📍</span>
+        <div>
+            <label>Where</label>
+            <input type="text" id="searchPlace" placeholder="Where to?">
+        </div>
+    </div>
+
+    <div class="search-field">
+        <span class="icon">📅</span>
+        <div>
+            <label>Date</label>
+            <input type="date" id="searchDate">
+        </div>
+    </div>
+
+    <button class="search-btn" onclick="searchDestination()">🔍</button>
+</div>
+
+<div class="no-results" id="noResults">No matching destinations found.</div>
+
+<!-- Greeting -->
+<div class="greeting">
+    Welcome, <span id="username"></span>!
+</div>
+
+<h1 class="title">Popular Destinations</h1>
+
+<!-- DESTINATIONS -->
+<div class="container">
+
+    <div class="card" onclick="openPackage('Maldives','maldives.jpg','Blue waters, white sand beaches and luxury resorts.',59000)">
+        <img src="maldives.jpg">
+        <h3>Maldives</h3>
+        <p>Blue waters, white sand beaches and luxury resorts.</p>
+    </div>
+
+    <div class="card" onclick="openPackage('Paris','paris.jpg','Paris is known for timeless landmarks, world-famous art, and unforgettable food.Eiffel tower-The symbol of paris,The Louvre & Mona Lisa,The Palace of Versailles.',54020)">
+        <img src="paris.jpg">
+        <h3>Paris</h3>
+        <p>Paris is known for timeless landmarks, world-famous art, and unforgettable food.Eiffel tower-The symbol of paris,The Louvre & Mona Lisa,The Palace of Versailles.</p>
+    </div>
+
+    <div class="card" onclick="openPackage('Ladakh','ladakh.jpg','High-Altitude landscapes and ancient monasteries.',27000)">
+        <img src="ladakh.jpg">
+        <h3>Ladakh</h3>
+        <p>High-Altitude landscapes and ancient monasteries.</p>
+    </div>
+
+    <div class="card" onclick="openPackage('Dubai','dubai.jpg','Sky-high buildings and desert adventures.',20000)">
+        <img src="dubai.jpg">
+        <h3>Dubai</h3>
+        <p>Sky-high buildings and desert adventures.</p>
+    </div>
+
+    <div class="card" onclick="openPackage('Kerala','kerala.jpg','Backwaters, greenery and peaceful vibes.',40000)">
+        <img src="kerala.jpg">
+        <h3>Kerala</h3>
+        <p>Backwaters, greenery and peaceful vibes.</p>
+    </div>
+
+    <div class="card" onclick="openPackage('Goa','goa.jpg','Indias most developed small state.White-sand Beaches, Active Nightlife and adventure activities.',15000)">
+        <img src="goa.jpg">
+        <h3>Goa</h3>
+        <p>India's most developed small state.White-sand Beaches,Active Nightlife and adventure activities.</p>
+    </div>
+
+    <div class="card" onclick="openPackage('Kashmir','kashmir.jpg','Heavenly Beauty on earth,Kashmir takes you closer to Natures magic through its pleasant weather and snow-capped mountains,lush green gardens,stunning waterfalls.',21500)">
+        <img src="kashmir.jpg">
+        <h3>Kashmir</h3>
+        <p>Heavenly Beauty on earth,Kashmir takes you closer to Natures magic through its pleasant weather and snow-capped mountains,lush green gardens,stunning waterfalls.</p>
+    </div>
+
+    <div class="card" onclick="openPackage('Kullu Manali','kullumanali.jpg','Paragliding, gateway for skiing and mountaineering.',15000)">
+        <img src="kullumanali.jpg">
+        <h3>Kullu Manali</h3>
+        <p>Paragliding, gateway for skiing and mountaineering.</p>
+    </div>
+
+    <div class="card" onclick="openPackage('Jerusalem','jerusalem.jpg','Jerusalem, ancient city of the Middle East that since 1967 has been wholly under the rule of the State of Israel.',503949)">
+        <img src="jerusalem.jpg">
+        <h3>Jerusalem</h3>
+        <p>Jerusalem, ancient city of the Middle East that since 1967 has been wholly under the rule of the State of Israel.</p>
+    </div>
+
+    <div class="card" onclick="openPackage('Vietnam','vietnam.jpg','Beaches, War history museums and Buddhist pagodas.',20000)">
+        <img src="vietnam.jpg">
+        <h3>Vietnam</h3>
+        <p>Beaches, War history museums and Buddhist pagodas.</p>
+    </div>
+
+    <div class="card" onclick="openPackage('Ooty','Ooty.jpg','Most Beautiful Hillstation in India.Shopping and Nightlife,sBotanical Gardens.',14000)">
+        <img src="Ooty.jpg">
+        <h3>Ooty</h3>
+        <p>Most Beautiful Hillstation in India.Shopping and Nightlife,Botanical Gardens.</p>
+    </div>
+
+    <div class="card" onclick="openPackage('London','london.jpg','London, the heart of England, stands as a vibrant mosaic of history, culture, and innovation. From the regal Buckingham Palace and the echoing bells of Big Ben to the modern Shard piercing the skyline, the city embodies the nations heritage.',64799)">
+        <img src="london.jpg">
+        <h3>London</h3>
+        <p>London, the heart of England, stands as a vibrant mosaic of history, culture, and innovation. From the regal Buckingham Palace and the echoing bells of Big Ben to the modern Shard piercing the skyline, the city embodies the nation's heritage.</p>
+    </div>
+
+    <div class="card" onclick="openPackage('Jaipur','jaipur.jpg','Pink city with Gardens, courtyards and museums.',25000)">
+        <img src="jaipur.jpg">
+        <h3>Jaipur</h3>
+        <p>Pink city with Gardens, courtyards and museums.</p>
+    </div>
+
+     <div class="card" onclick="openPackage('Rome','rome.jpg','Rome, historic city and capital of Roma provincia (province), of Lazio regione (region), and of the country of Italy.',211376)">
+        <img src="rome.jpg">
+        <h3>Rome</h3>
+        <p>Rome, historic city and capital of Roma provincia (province), of Lazio regione (region), and of the country of Italy.</p>
+    </div>
+
+    <div class="card" onclick="openPackage('Shillong','shillong.jpg','Nestled amidst the pine-clad hills, Shillong, the capital of Meghalaya, unfolds like a picturesque canvas at an elevation of 1496 meters.',13001)">
+        <img src="shillong.jpg">
+        <h3>Shillong</h3>
+        <p>Nestled amidst the pine-clad hills, Shillong, the capital of Meghalaya, unfolds like a picturesque canvas at an elevation of 1496 meters.</p>
+    </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="copyright">
+    &copy; 2025 Beyond Borders. All rights reserved.
+</div>
+
+<script>
+// Display user's full name
+document.getElementById("username").textContent = currentUser.fullName;
+
+// Logout
+function logout() {
+    localStorage.removeItem("loggedIn");
+    localStorage.removeItem("currentUser");
+    window.location.href = "login.html";
+}
+
+// SEARCH FUNCTION
+function searchDestination() {
+    let place = document.getElementById("searchPlace").value.toLowerCase();
+    let cards = document.querySelectorAll(".card");
+    let foundAny = false;
+
+    cards.forEach(card => {
+        let title = card.querySelector("h3").textContent.toLowerCase();
+        if (title.includes(place)) {
+            card.style.display = "block";
+            foundAny = true;
+        } else {
+            card.style.display = "none";
+        }
+    });
+
+    document.getElementById("noResults").style.display = foundAny ? "none" : "block";
+}
+
+// FIXED openPackage() — now works perfectly
+function openPackage(name, image, info, price) {
+    const url = `packages.html?name=${encodeURIComponent(name)}&image=${encodeURIComponent(image)}&info=${encodeURIComponent(info)}&price=${price}`;
+    window.location.href = url;
+}
+</script>
+
+</body>
+</html>

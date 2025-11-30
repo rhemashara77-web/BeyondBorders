@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Track Your Ride — Beyond Borders</title>
+<style>
+  body {
+    margin: 0;
+    font-family: Inter, Arial, sans-serif;
+    background: url("background.jpg") center/cover no-repeat fixed; /* Set your background image */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .tracking-container {
+    background: rgba(255,255,255,0.95); /* Slight transparency for background effect */
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+  }
+
+  .tracking-container h2 {
+    color: #e64b3c;
+    margin-bottom: 20px;
+  }
+
+  .tracking-container p {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+
+  .status {
+    font-weight: 600;
+    font-size: 18px;
+    color: #ff4d30;
+    margin-top: 15px;
+  }
+
+  .back-btn {
+    margin-top: 25px;
+    padding: 12px 20px;
+    background: #ff4d30;
+    border: none;
+    color: #fff;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .back-btn:hover {
+    background: #e64b3c;
+  }
+</style>
+</head>
+<body>
+
+<div class="tracking-container">
+  <h2>Track Your Ride</h2>
+  <p id="bookingID">Booking ID: </p>
+  <p class="status" id="rideStatus">Status: </p>
+  <a href="bookride.html" class="back-btn">Back to Booking</a>
+</div>
+
+<script>
+  // Get booking ID from URL
+  const params = new URLSearchParams(window.location.search);
+  const bookingID = params.get('booking');
+
+  // Display booking ID
+  document.getElementById('bookingID').innerText = bookingID ? `Booking ID: ${bookingID}` : 'Booking ID not found';
+
+  // Simulated ride status
+  const statuses = [
+    'Driver Assigned',
+    'Driver En Route',
+    'Ride Started',
+    'Arriving Soon',
+    'Completed'
+  ];
+
+  // Pick random status for demonstration
+  const statusIndex = Math.floor(Math.random() * statuses.length);
+  document.getElementById('rideStatus').innerText = `Status: ${statuses[statusIndex]}`;
+</script>
+
+</body>
+</html>
